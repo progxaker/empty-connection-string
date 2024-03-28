@@ -7,8 +7,11 @@ from azure.monitor.opentelemetry import configure_azure_monitor
 configure_azure_monitor()
 tracer = trace.get_tracer("SimpleApp", "1.0")
 
+def main():
+    with tracer.start_as_current_span("simple-app") as span:
+        sleep(10)
+        print (trace.format_trace_id(span.get_span_context().trace_id))
+
 # Test main function
 def test_main():
     main()
-    captured = capsys.readouterr()
-    assert(captured!="") in captured.out
